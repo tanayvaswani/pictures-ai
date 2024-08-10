@@ -75,7 +75,9 @@ const PromptForm = () => {
   return (
     <div className="w-full flex flex-col lg:flex-row items-start gap-6">
       <div className="w-full border rounded-lg">
-        <h1 className="py-3 px-3 text-xl font-semibold border-b">Get an Answer</h1>
+        <h1 className="py-3 px-3 text-xl font-semibold border-b text-transparent bg-clip-text bg-gradient-to-tl from-violet-600 to-white">
+          Get an Answer
+        </h1>
 
         <Form {...form}>
           <form
