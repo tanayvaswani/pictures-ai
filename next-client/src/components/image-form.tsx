@@ -27,8 +27,8 @@ import {
 } from '@/components/ui/select';
 
 const models: { [key: string]: string } = {
-  'stable-diffusion-xl-base-1.0': 'sdxl1',
-  'stable-diffusion-xl-lightning': 'sdxll',
+  sdxl1: 'stable-diffusion-xl-base-1.0',
+  sdxll: 'stable-diffusion-xl-lightning',
 };
 
 const formSchema = z.object({
@@ -53,32 +53,25 @@ const ImageForm = () => {
     setImageResponse(null);
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_HONO_URL}/generate-image`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            modelName: values.modelName,
-            prompt: values.prompt,
-          }),
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HONO_URL}/generate-image`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          modelName: values.modelName,
+          prompt: values.prompt,
+        }),
+      });
 
       if (!response.ok || !response) {
-        throw new Error(
-          'Failed to get a response from server, please try again.',
-        );
+        throw new Error('Failed to get a response from server, please try again.');
       }
 
       const imageBinaryData = await response.blob();
 
       if (form.formState.isSubmitted && !form.formState.isSubmitSuccessful) {
-        throw new Error(
-          'Failed to get a response from server, please try again.',
-        );
+        throw new Error('Failed to get a response from server, please try again.');
       }
 
       setImageResponse(imageBinaryData);
@@ -93,12 +86,14 @@ const ImageForm = () => {
   const isSubmitting = form.formState.isSubmitting;
 
   return (
-    <div className="w-full md:max-w-screen-md md:mx-auto">
-      <div className="w-full">
+    <div className="w-full flex flex-col lg:flex-row items-start gap-6">
+      <div className="w-full border rounded-lg">
+        <h1 className="py-3 px-3 text-xl font-semibold border-b">Generate an Image</h1>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 w-full"
+            className="space-y-4 w-full px-3 py-4"
           >
             <FormField
               control={form.control}
@@ -106,10 +101,7 @@ const ImageForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Model</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Choose a model" />
@@ -117,17 +109,15 @@ const ImageForm = () => {
                     </FormControl>
 
                     <SelectContent>
-                      {Object.values(models).map((model, index) => (
+                      {Object.keys(models).map((model, index) => (
                         <SelectItem key={`${model}`} value={model}>
-                          {model}
+                          {models[model]}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
 
-                  <FormDescription>
-                    Choose a model to generate your image from.
-                  </FormDescription>
+                  <FormDescription>Choose a model to generate your image</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -143,22 +133,20 @@ const ImageForm = () => {
                   <FormControl>
                     <Input
                       className="w-full"
-                      placeholder="What's the capital of India?"
+                      placeholder="A mustang on the highway"
                       {...field}
                     />
                   </FormControl>
 
-                  <FormDescription>
-                    Please enter a prompt to get response.
-                  </FormDescription>
+                  <FormDescription>Enter a prompt to get response</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit" className="min-w-32 transition-all">
+            <Button type="submit" className="w-full transition-all delay-150">
               {isSubmitting ? (
-                <Loader className="animate-spin h-4 w-4 mr-1" />
+                <Loader className="animate-spin transition-all delay-150 h-4 w-4 mr-1" />
               ) : (
                 ''
               )}
@@ -168,10 +156,10 @@ const ImageForm = () => {
         </Form>
       </div>
 
-      <div className="flex items-center justify-center py-6">
+      <div className="w-full flex items-center justify-center">
         {isSubmitting && (
-          <p className="animate-pulse">
-            Please wait while we generate the image for you, Thanks!
+          <p className="animate-pulse py-6">
+            Please wait while we generate an image for you, Thanks!
           </p>
         )}
 
