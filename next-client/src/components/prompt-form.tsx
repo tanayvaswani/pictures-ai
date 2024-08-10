@@ -48,9 +48,7 @@ const PromptForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error(
-          'Failed to get a response from server, please try again.',
-        );
+        throw new Error('Failed to get a response from server, please try again.');
       }
 
       const data = await response.json();
@@ -60,9 +58,7 @@ const PromptForm = () => {
       }
 
       if (form.formState.isSubmitted && !form.formState.isSubmitSuccessful) {
-        throw new Error(
-          'Failed to get a response from server, please try again.',
-        );
+        throw new Error('Failed to get a response from server, please try again.');
       }
 
       setPromptResponse(data.detail.response.toString());
@@ -77,12 +73,14 @@ const PromptForm = () => {
   const isSubmitting = form.formState.isSubmitting;
 
   return (
-    <div className="w-full md:max-w-screen-md md:mx-auto">
-      <div className="w-full">
+    <div className="w-full flex flex-col lg:flex-row items-start gap-6">
+      <div className="w-full border rounded-lg">
+        <h1 className="py-3 px-3 text-xl font-semibold border-b">Get an Answer</h1>
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 w-full"
+            className="space-y-4 w-full px-3 py-4"
           >
             <FormField
               control={form.control}
@@ -107,21 +105,17 @@ const PromptForm = () => {
               )}
             />
 
-            <Button type="submit" className="min-w-32 transition-all">
-              {isSubmitting ? (
-                <Loader className="animate-spin h-4 w-4 mr-1" />
-              ) : (
-                ''
-              )}{' '}
+            <Button type="submit" className="w-full transition-all">
+              {isSubmitting ? <Loader className="animate-spin h-4 w-4 mr-1" /> : ''}{' '}
               Submit
             </Button>
           </form>
         </Form>
       </div>
 
-      <div className="flex items-center justify-center py-6">
+      <div className="w-full flex items-center justify-center">
         {isSubmitting && (
-          <p className="animate-pulse">
+          <p className="animate-pulse py-6">
             Please wait while we generate the response.
           </p>
         )}

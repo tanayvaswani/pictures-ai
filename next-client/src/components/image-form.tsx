@@ -150,7 +150,7 @@ const ImageForm = () => {
               ) : (
                 ''
               )}
-              Submit
+              Generate Image
             </Button>
           </form>
         </Form>
