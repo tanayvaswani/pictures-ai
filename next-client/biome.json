@@ -1,0 +1,17 @@
+{
+	"formatter": {
+		"indentStyle": "space",
+		"lineWidth": 80
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"lineWidth": 90
+		}
+	},
+	"json": {
+		"formatter": {
+			"enabled": false
+		}
+	}
+}
