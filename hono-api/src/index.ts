@@ -70,12 +70,11 @@ app.post("/generate-image", async (c) => {
 			);
 		}
 
+		const selectedModel: BaseAiTextToImageModels = models[modelName];
+
 		const inputs = {
 			prompt: prompt,
 		};
-
-		const selectedModel: BaseAiTextToImageModels = models[modelName];
-
 		const response = await c.env.AI.run(selectedModel, inputs);
 
 		if (!response) {
